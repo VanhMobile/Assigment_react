@@ -1,0 +1,6 @@
+react native asset (link file asset vào android và ios)
+npm i lottie-react-native (thư viện lottie để chạy animation)
+npm i react-native-vector-icons (Bộ icon của app material)
+npm i iconsax-react-native (bộ icon mới)
+npm install @react-navigation/native @react-navigation/native-stack (chuyển quản lý các màn hình của ứng dụng react)
+npm install react-native-linear-gradient đổ 2 màu trong một view 
