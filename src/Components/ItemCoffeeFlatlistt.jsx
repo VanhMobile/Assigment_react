@@ -16,6 +16,8 @@ import {colors, fontFamily, fontSize, spacing} from '../assets/themes/themes';
 const CARD_WIDTH = Dimensions.get('window').width * 0.32;
 
 const ItemCoffeeFlatlistt = ({item, handleItemPress}) => {
+  const url = item.imagelink_square;
+  console.log(url)
   return (
     <LinearGradient
       start={{x: 1, y: 0}}
@@ -24,7 +26,7 @@ const ItemCoffeeFlatlistt = ({item, handleItemPress}) => {
       colors={[colors.primaryGreyHex, colors.primaryBlackHex]}>
       <View>
         <ImageBackground
-          source={item.imagelink_portrait}
+          source={{uri: url}}
           resizeMode="contain"
           style={styles.ImageBackground}>
           <View style={styles.headerItem}>
@@ -55,7 +57,7 @@ const ItemCoffeeFlatlistt = ({item, handleItemPress}) => {
               </Text>
             </Text>
           </View>
-          <TouchableOpacity onPress={handleItemPress}>
+          <TouchableOpacity onPress={()=>handleItemPress(item)}>
             <Add size="40" color={colors.primaryOrangeHex} variant="Bold" />
           </TouchableOpacity>
         </View>

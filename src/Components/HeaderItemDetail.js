@@ -1,12 +1,13 @@
 /* eslint-disable prettier/prettier */
 import {
+  Dimensions,
   ImageBackground,
   StyleSheet,
   Text,
   TouchableNativeFeedback,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ArrowLeft2,
   Blur,
@@ -16,17 +17,30 @@ import {
 } from 'iconsax-react-native';
 import {colors, fontFamily, fontSize, spacing} from '../assets/themes/themes';
 import LinearGradient from 'react-native-linear-gradient';
-
-const HeaderItemDetail = ({}) => {
+import {updateProduct} from '../assets/api/product.api';
+const {width, height} = Dimensions.get('window');
+const HeaderItemDetail = ({data}) => {
+  const [favourite, setFavourite] = useState(data.favourite);
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../assets/imgs/coffee_3.jpg')}
+        source={{uri: data.imagelink_portrait}}
         style={styles.imgProduct}>
         <View style={styles.header}>
-          <TouchableNativeFeedback>
+          <TouchableNativeFeedback
+            onPress={async () => {
+              setFavourite(!favourite);
+              data.favourite = favourite;
+              updateProduct(data.id, data);
+            }}>
             <View style={styles.btnHeart}>
-              <Heart size="32" color={colors.primaryRedHex} variant="Bold" />
+              <Heart
+                size="32"
+                color={
+                  favourite ? colors.primaryRedHex : colors.primaryLightGreyHex
+                }
+                variant="Bold"
+              />
             </View>
           </TouchableNativeFeedback>
         </View>
@@ -34,12 +48,16 @@ const HeaderItemDetail = ({}) => {
           <View style={styles.inforName}>
             <View style={{}}>
               <Text
+                numberOfLines={1}
+                ellipsizeMode="tail"
                 style={{
+                  width: width * 0.34,
                   color: colors.primaryWhiteHex,
-                  fontSize: fontSize.size_28,
+                  fontSize: fontSize.size_18,
                   fontFamily: fontFamily.poppins_extrabold,
+                  marginRight: 8,
                 }}>
-                Black Coffee
+                {data.name}
               </Text>
               <Text
                 style={{
@@ -47,7 +65,7 @@ const HeaderItemDetail = ({}) => {
                   fontSize: fontSize.size_14,
                   fontFamily: fontFamily.poppins_regular,
                 }}>
-                With Steamed Milk
+                {data.special_ingredient}
               </Text>
             </View>
 
@@ -58,7 +76,17 @@ const HeaderItemDetail = ({}) => {
                   color={colors.primaryOrangeHex}
                   variant="Bold"
                 />
-                <Text style={{color: colors.primaryWhiteHex}}>Bean</Text>
+                <Text
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={{
+                    color: colors.primaryWhiteHex,
+                    width: 40,
+                    textAlign: 'center',
+                  }}>
+                  {' '}
+                  {data.type}{' '}
+                </Text>
               </View>
               <View style={styles.btnCate}>
                 <LocationMinus
@@ -66,8 +94,15 @@ const HeaderItemDetail = ({}) => {
                   color={colors.primaryOrangeHex}
                   variant="Bold"
                 />
-                <Text Text style={{color: colors.primaryWhiteHex}}>
-                  Milk
+                <Text
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={{
+                    color: colors.primaryWhiteHex,
+                    width: 40,
+                    textAlign: 'center',
+                  }}>
+                  {data.ingredients}
                 </Text>
               </View>
             </View>
@@ -83,7 +118,7 @@ const HeaderItemDetail = ({}) => {
                   fontFamily: fontFamily.poppins_regular,
                   fontWeight: 700,
                 }}>
-                4.7
+                {data.average_rating}
               </Text>
             </View>
 
@@ -102,7 +137,7 @@ const HeaderItemDetail = ({}) => {
                   fontSize: fontSize.size_12,
                   fontFamily: fontFamily.poppins_regular,
                 }}>
-                Medium Roasted
+                {data.roasted}
               </Text>
             </View>
           </View>
@@ -132,10 +167,7 @@ const HeaderItemDetail = ({}) => {
               fontWeight: 600,
               paddingBottom: spacing.space_8,
             }}>
-            Black coffee is arguably the most common type of coffee drink out
-            there. Its popularity can be mainly attributed to how easy it is to
-            make this beverage, be it drip, pour-over, French press, or anything
-            else. Black coffee is usually served with no add-ins.
+            {data.description}
           </Text>
         </View>
       </LinearGradient>

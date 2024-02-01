@@ -10,8 +10,9 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import EditText from '../Components/EditText';
 import {
   colors,
@@ -22,12 +23,48 @@ import {
 } from '../assets/themes/themes';
 import {Eye, Google} from 'iconsax-react-native';
 import Button from '../Components/Button';
+import axios from 'axios';
+import Singleton from '../designPattern/Singleton';
 
 const {width, height} = Dimensions.get('window');
 
 const LoginScreen = ({navigation}) => {
+  const [data, setData] = useState([]);
+  const singleton = Singleton.getInstance();
+  useEffect(() => {
+    axios
+      .get('https://65623cdedcd355c08324aeda.mockapi.io/api/v1/User')
+      .then(res => setData(res.data))
+      .catch(err => console.log(err));
+  }, []);
   const handleButtonPress = () => {
-    navigation.navigate('MainScreen');
+    if (email === '' || password === '') {
+      ToastAndroid.show('dữ liệu trống', ToastAndroid.SHORT);
+      return;
+    }
+
+    const user = data.find(
+      item => item.emailAddress === email && item.password === password,
+    );
+
+    if (user) {
+      navigation.navigate('MainScreen');
+      singleton.setUser(user);
+    } else {
+      ToastAndroid.show('Tài khoản không tồn tại', ToastAndroid.SHORT);
+    }
+  };
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const onHandleTextName = value => {
+    setEmail(value);
+    console.log(value);
+  };
+
+  const onHandleTextPassWord = value => {
+    setPassword(value);
   };
   return (
     <View style={styles.container}>
@@ -46,13 +83,14 @@ const LoginScreen = ({navigation}) => {
             hint={'Email Address'}
             placeholderTextColor={colors.secondaryLightGreyHex}
             styleEdt={styles.edt}
+            onHandleText={onHandleTextName}
           />
           <EditText
             hint={'Password'}
             placeholderTextColor={colors.secondaryLightGreyHex}
-            rightIcon={<Eye size="25" color={colors.secondaryLightGreyHex} />}
             secureTextEntry={true}
             styleEdt={styles.edt}
+            onHandleText={onHandleTextPassWord}
           />
           <Button
             title={'Login'}

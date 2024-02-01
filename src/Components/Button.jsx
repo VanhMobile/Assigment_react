@@ -17,10 +17,11 @@ const Button = ({
   onPress,
   opacity,
   background,
+  styleButton,
 }) => {
   return (
     <TouchableOpacity
-      style={[styles.button, {backgroundColor: background}]}
+      style={[styles.button, {backgroundColor: background}, {styleButton}]}
       onPress={onPress}
       activeOpacity={opacity}>
       {leftIcon}
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
     marginEnd: spacing.space_24,
     borderRadius: boderRadius.radius_8,
     justifyContent: 'center',
+    paddingBottom: 0,
   },
   title: {
     fontFamily: fontFamily.poppins_semibold,

@@ -30,7 +30,7 @@ const ItemHistory = ({item}) => {
           </View>
           <Text style={[styles.price, {fontSize: fontSize.size_30}]}>
             $
-            <Text style={[styles.itemPrice, {fontSize: fontSize.size_30}]}>
+            <Text style={[styles.itemPrice, {fontSize: fontSize.size_24}]}>
               100
             </Text>
           </Text>

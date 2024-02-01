@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {colors, fontFamily, fontSize, spacing} from '../assets/themes/themes';
 import {
   ArrowLeft2,
@@ -20,6 +20,9 @@ import {
   LocationMinus,
   Star1,
 } from 'iconsax-react-native';
+import {addFavourite, deleteFavourite} from '../assets/api/favourite.api';
+import {updateProduct} from '../assets/api/product.api';
+import {addCart} from '../assets/api/cart.api';
 
 const WIDTH_SCREEN = Dimensions.get('window').width;
 const HEIGHT_SCREEN = Dimensions.get('window').height;
@@ -39,13 +42,17 @@ const dataSize = [
   },
 ];
 
-const DetailScreen = ({navigation}) => {
+const DetailScreen = ({navigation, route}) => {
+  const {data} = route.params;
+  const [selectID, setSelectId] = useState(data.prices[0].size);
+  const [price, setPrice] = useState(data.prices[0].price);
+  const [favourite, setFavourite] = useState(data.favourite);
   return (
     <View style={styles.container}>
       <ScrollView>
         <View>
           <ImageBackground
-            source={require('../assets/imgs/coffee_3.jpg')}
+            source={{uri: data.imagelink_portrait}}
             style={styles.imgProduct}>
             <View style={styles.header}>
               <TouchableNativeFeedback
@@ -60,11 +67,20 @@ const DetailScreen = ({navigation}) => {
                   />
                 </View>
               </TouchableNativeFeedback>
-              <TouchableNativeFeedback>
+              <TouchableNativeFeedback
+                onPress={async () => {
+                  await setFavourite(!favourite);
+                  data.favourite = true;
+                  updateProduct(data.id, data);
+                }}>
                 <View style={styles.btnHeart}>
                   <Heart
                     size="32"
-                    color={colors.primaryRedHex}
+                    color={
+                      favourite
+                        ? colors.primaryRedHex
+                        : colors.primaryLightGreyHex
+                    }
                     variant="Bold"
                   />
                 </View>
@@ -76,10 +92,10 @@ const DetailScreen = ({navigation}) => {
                   <Text
                     style={{
                       color: colors.primaryWhiteHex,
-                      fontSize: fontSize.size_28,
+                      fontSize: fontSize.size_18,
                       fontFamily: fontFamily.poppins_extrabold,
                     }}>
-                    Black Coffee
+                    {data.name}
                   </Text>
                   <Text
                     style={{
@@ -87,7 +103,7 @@ const DetailScreen = ({navigation}) => {
                       fontSize: fontSize.size_14,
                       fontFamily: fontFamily.poppins_regular,
                     }}>
-                    With Steamed Milk
+                    {data.special_ingredient}
                   </Text>
                 </View>
 
@@ -98,7 +114,12 @@ const DetailScreen = ({navigation}) => {
                       color={colors.primaryOrangeHex}
                       variant="Bold"
                     />
-                    <Text style={{color: colors.primaryWhiteHex}}>Bean</Text>
+                    <Text
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                      style={{color: colors.primaryWhiteHex, width: 32}}>
+                      {data.type}
+                    </Text>
                   </View>
                   <View style={styles.btnCate}>
                     <LocationMinus
@@ -106,8 +127,16 @@ const DetailScreen = ({navigation}) => {
                       color={colors.primaryOrangeHex}
                       variant="Bold"
                     />
-                    <Text Text style={{color: colors.primaryWhiteHex}}>
-                      Milk
+                    <Text
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                      Text
+                      style={{
+                        color: colors.primaryWhiteHex,
+                        width: 40,
+                        textAlign: 'center',
+                      }}>
+                      {data.ingredients}
                     </Text>
                   </View>
                 </View>
@@ -127,7 +156,7 @@ const DetailScreen = ({navigation}) => {
                       fontFamily: fontFamily.poppins_regular,
                       fontWeight: 700,
                     }}>
-                    4.7
+                    {data.average_rating}
                   </Text>
                 </View>
 
@@ -146,7 +175,7 @@ const DetailScreen = ({navigation}) => {
                       fontSize: fontSize.size_12,
                       fontFamily: fontFamily.poppins_regular,
                     }}>
-                    Medium Roasted
+                    {data.roasted}
                   </Text>
                 </View>
               </View>
@@ -171,10 +200,7 @@ const DetailScreen = ({navigation}) => {
               fontFamily: fontFamily.poppins_regular,
               fontWeight: 600,
             }}>
-            Black coffee is arguably the most common type of coffee drink out
-            there. Its popularity can be mainly attributed to how easy it is to
-            make this beverage, be it drip, pour-over, French press, or anything
-            else. Black coffee is usually served with no add-ins.
+            {data.description}
           </Text>
           <Text
             style={{
@@ -193,15 +219,22 @@ const DetailScreen = ({navigation}) => {
               justifyContent: 'space-between',
               gap: spacing.space_20,
             }}>
-            {dataSize.map(item => (
+            {data.prices.map(item => (
               <TouchableOpacity
                 key={item.size}
-                onPress={() => {}}
+                onPress={() => {
+                  setSelectId(item.size);
+                  setPrice(item.price);
+                }}
                 style={[
                   styles.SizeBox,
                   {
                     borderColor: colors.secondaryLightGreyHex,
                   },
+
+                  item.size === selectID
+                    ? {borderColor: colors.primaryOrangeHex}
+                    : {},
                 ]}>
                 <Text
                   style={[
@@ -209,6 +242,9 @@ const DetailScreen = ({navigation}) => {
                     {
                       color: colors.secondaryLightGreyHex,
                     },
+                    item.size === selectID
+                      ? {color: colors.primaryOrangeHex}
+                      : {},
                   ]}>
                   {item.size}
                 </Text>
@@ -219,10 +255,14 @@ const DetailScreen = ({navigation}) => {
             <View style={styles.PriceContainer}>
               <Text style={styles.PriceTitle}>Price</Text>
               <Text style={styles.PriceText}>
-                $ <Text style={styles.Price}>10.7</Text>
+                $ <Text style={styles.Price}>{price}</Text>
               </Text>
             </View>
-            <TouchableOpacity style={styles.PayButton} onPress={() => {}}>
+            <TouchableOpacity
+              style={styles.PayButton}
+              onPress={async () => {
+                await addCart(data);
+              }}>
               <Text style={styles.ButtonText}>ADD TO CART</Text>
             </TouchableOpacity>
           </View>
@@ -330,7 +370,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    height: spacing.space_36 * 2,
+    height: 60,
     borderRadius: 20,
   },
   ButtonText: {
@@ -343,4 +383,5 @@ const styles = StyleSheet.create({
     aspectRatio: 20 / 25,
     justifyContent: 'space-between',
   },
+  acitive: {},
 });

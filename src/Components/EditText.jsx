@@ -1,23 +1,22 @@
 /* eslint-disable prettier/prettier */
 
-import {StyleSheet, TextInput, View} from 'react-native';
+import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import {
   colors,
   fontFamily,
-  fontSize,
-  spacing,
-  boderRadius,
 } from '../assets/themes/themes';
+import { Eye, EyeSlash } from 'iconsax-react-native';
 
 const EditText = ({
   leftIcon,
   styleEdt,
-  rightIcon,
   paddingIcon,
   hint,
+  onHandleText,
   ...props
 }) => {
+  const [showPass, setShowPass] = useState(props.secureTextEntry);
   return (
     <View style={[styles.container, styleEdt]}>
       <View>{leftIcon}</View>
@@ -25,8 +24,29 @@ const EditText = ({
         style={[styles.TextInput, {paddingHorizontal: paddingIcon}]}
         placeholder={hint}
         {...props}
+        secureTextEntry={showPass}
+        onChangeText={(text) => {
+          onHandleText(text);
+        }}
       />
-      <View>{rightIcon}</View>
+      {
+        props.secureTextEntry ? (
+          <View>
+            <TouchableOpacity
+              style={{ width: 24 }}
+              onPress={() => setShowPass(!showPass)}
+            >
+              {!showPass ? (
+                <Eye size="18" color={colors.secondaryLightGreyHex} />
+              ) : (
+                <EyeSlash size="18" color={colors.secondaryLightGreyHex}/>
+              )}
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <></>
+        )
+      }
     </View>
   );
 };

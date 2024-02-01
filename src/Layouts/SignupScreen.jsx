@@ -8,8 +8,9 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import EditText from '../Components/EditText';
 import {
   colors,
@@ -20,10 +21,63 @@ import {
 } from '../assets/themes/themes';
 import {Eye, Google} from 'iconsax-react-native';
 import Button from '../Components/Button';
+import {addUser, getData} from '../assets/api/user.api';
+import axios from 'axios';
 
 const {width, height} = Dimensions.get('window');
 
 const SignupScreen = ({navigation}) => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPass, setConfirmPass] = useState('');
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('https://65623cdedcd355c08324aeda.mockapi.io/api/v1/User')
+      .then(res => setData(res.data))
+      .catch(err => console.log(err));
+  }, []);
+  const onHandleTextName = value => {
+    setName(value);
+  };
+  const onHandleTextEmail = value => {
+    setEmail(value);
+  };
+  const onHandleTextPass = value => {
+    setPassword(value);
+  };
+  const onHandleTextConfirmPass = value => {
+    setConfirmPass(value);
+  };
+
+  const onPressSignUp = async () => {
+    if (email === '' || name === '' || password === '' || confirmPass === '') {
+      ToastAndroid.show('Dữ liệu trống', ToastAndroid.SHORT);
+      return;
+    }
+    const user = data.find(item => item.email === email);
+    if (user) {
+      ToastAndroid.show('Tài khoản đã tồn tại', ToastAndroid.SHORT);
+      return;
+    }
+
+    if (password !== confirmPass) {
+      ToastAndroid.show('Mật khẩu không đúng', ToastAndroid.SHORT);
+      return;
+    }
+
+    const newData = {
+      fullName: name,
+      emailAddress: email,
+      password: password,
+    };
+
+    await addUser(newData);
+    ToastAndroid.show('Tạo tài khoản thành công', ToastAndroid.SHORT);
+    navigation.goBack();
+  };
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -41,31 +95,34 @@ const SignupScreen = ({navigation}) => {
             hint={'Name'}
             placeholderTextColor={colors.secondaryLightGreyHex}
             styleEdt={styles.edt}
+            onHandleText={onHandleTextName}
           />
           <EditText
             hint={'Email Address'}
             placeholderTextColor={colors.secondaryLightGreyHex}
             styleEdt={styles.edt}
+            onHandleText={onHandleTextEmail}
           />
           <EditText
             hint={'Password'}
             placeholderTextColor={colors.secondaryLightGreyHex}
-            rightIcon={<Eye size="25" color={colors.secondaryLightGreyHex} />}
             secureTextEntry={true}
             styleEdt={styles.edt}
+            onHandleText={onHandleTextPass}
           />
           <EditText
             hint={'Confirm password'}
             placeholderTextColor={colors.secondaryLightGreyHex}
-            rightIcon={<Eye size="25" color={colors.secondaryLightGreyHex} />}
             secureTextEntry={true}
             styleEdt={styles.edt}
+            onHandleText={onHandleTextConfirmPass}
           />
           <Button
             title={'Register'}
             background={colors.primaryOrangeHex}
             opacity={0.3}
             colorTitle={colors.primaryWhiteHex}
+            onPress={onPressSignUp}
           />
           <TouchableWithoutFeedback
             onPress={() => {
@@ -140,5 +197,6 @@ const styles = StyleSheet.create({
     marginTop: spacing.space_36,
     marginEnd: spacing.space_24,
     marginStart: spacing.space_24,
+    marginBottom: spacing.space_16,
   },
 });
