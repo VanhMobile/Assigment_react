@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1079470715456",
+    "project_id": "ass-react-c7981",
+    "storage_bucket": "ass-react-c7981.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079470715456:android:542aef362b5cbf6151a5a5",
+        "android_client_info": {
+          "package_name": "com.assigment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF2e0Qs3C6NjISWhYRS6H0faI7Gc2l8YE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
