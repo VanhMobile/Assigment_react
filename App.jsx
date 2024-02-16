@@ -9,6 +9,7 @@ import MainScreen from './src/Layouts/MainScreen';
 import DetailScreen from './src/Layouts/DetailScreen';
 import SettingScreen from './src/Layouts/SettingScreen';
 import PaymentScreen from './src/Layouts/PaymentScreen';
+import InforApp from './src/Layouts/InforApp';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
         <Stack.Screen name="MainScreen" component={MainScreen} />
         <Stack.Screen name="SettingScreen" component={SettingScreen} />
         <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
+        <Stack.Screen name="InforApp" component={InforApp} />
       </Stack.Navigator>
     </NavigationContainer>
   );

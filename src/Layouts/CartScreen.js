@@ -7,6 +7,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colors, fontFamily, fontSize, spacing} from '../assets/themes/themes';
@@ -15,6 +16,8 @@ import {Category} from 'iconsax-react-native';
 import ItemCart from '../Components/ItemCart';
 import HeaderApp from '../Components/HeaderApp';
 import axios from 'axios';
+import {addBill} from '../assets/api/bill.api';
+import {addProduct} from '../assets/api/product.api';
 
 const CartScreen = () => {
   const [data, setData] = useState([]);
@@ -27,13 +30,28 @@ const CartScreen = () => {
       })
       .catch(err => console.log(err));
   }, []);
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await axios
+      .get('https://65ace9dfadbd5aa31bdfbec1.mockapi.io/VanhCoffee/Cart')
+      .then(res => {
+        setData(res.data);
+      })
+      .catch(err => console.log(err));
+
+    setRefreshing(false);
+  }, []);
 
   const renderItem = ({item}) => <ItemCart item={item} quantity={'1'} />;
 
   return (
     <View style={styles.container}>
       <HeaderApp title={'Cart'} />
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <View>
           <FlatList
             data={data}

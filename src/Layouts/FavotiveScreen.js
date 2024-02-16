@@ -20,11 +20,16 @@ const FavotiveScreen = () => {
   }, []);
   const [refreshing, setRefreshing] = useState(false);
 
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+    await axios
+      .get('https://65623cdedcd355c08324aeda.mockapi.io/api/v1/products')
+      .then(res => {
+        setData(res.data);
+      })
+      .catch(err => console.log(err));
+
+    setRefreshing(false);
   }, []);
 
   const favourite = data.filter(item => item.favourite);

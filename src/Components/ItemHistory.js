@@ -7,12 +7,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {colors, fontFamily, fontSize, spacing} from '../assets/themes/themes';
 import {Add, Minus} from 'iconsax-react-native';
 
 const ItemHistory = ({item}) => {
+  let sumPrice = 0;
   return (
     <LinearGradient
       start={{x: 0, y: 0}}
@@ -22,7 +23,10 @@ const ItemHistory = ({item}) => {
       <View style={styles.container}>
         <View style={styles.header}>
           <View>
-            <Image source={item.imagelink_portrait} style={styles.imgItem} />
+            <Image
+              source={{uri: item.imagelink_square}}
+              style={styles.imgItem}
+            />
           </View>
           <View style={{marginLeft: spacing.space_16, flex: 1}}>
             <Text style={styles.itemTitle}>{item.name}</Text>
@@ -31,7 +35,9 @@ const ItemHistory = ({item}) => {
           <Text style={[styles.price, {fontSize: fontSize.size_30}]}>
             $
             <Text style={[styles.itemPrice, {fontSize: fontSize.size_24}]}>
-              100
+              {3 * item.prices[0].price +
+                3 * item.prices[1].price +
+                3 * item.prices[2].price}
             </Text>
           </Text>
         </View>
@@ -54,7 +60,7 @@ const ItemHistory = ({item}) => {
               </Text>
             </Text>
             <Text style={[styles.itemPrice, {fontSize: fontSize.size_20}]}>
-              9.00
+              {data.price * 3}
             </Text>
           </View>
         </View>

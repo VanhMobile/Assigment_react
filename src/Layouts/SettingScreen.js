@@ -14,10 +14,21 @@ import {
   LogoutCurve,
 } from 'iconsax-react-native';
 import ItemSetting from '../Components/ItemSetting';
+import Dialog from '../Components/Dialog';
 
 const SettingScreen = ({navigation}) => {
   const handleGoBack = () => {
     navigation.goBack();
+  };
+
+  const [dialogVisible, setDialogVisible] = useState(false);
+
+  const openDialog = () => {
+    setDialogVisible(true);
+  };
+
+  const closeDialog = () => {
+    setDialogVisible(false);
   };
 
   const handlePressItem_Payment = () => {
@@ -105,6 +116,9 @@ const SettingScreen = ({navigation}) => {
             variant="Bold"
           />
         }
+        handlePress={() => {
+          navigation.navigate('InforApp');
+        }}
         title={'Giới thiệu'}
         rightIcon={
           <ArrowRight2
@@ -149,7 +163,10 @@ const SettingScreen = ({navigation}) => {
             variant="Bold"
           />
         }
+        handlePress={openDialog}
       />
+
+      <Dialog visible={dialogVisible} />
     </View>
   );
 };
