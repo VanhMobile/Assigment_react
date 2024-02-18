@@ -33,7 +33,7 @@ const HeaderItemDetail = ({data}) => {
               data.favourite = favourite;
               updateProduct(data.id, data);
             }}>
-            <View style={styles.btnHeart}>
+            <View>
               <Heart
                 size="32"
                 color={

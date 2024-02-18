@@ -59,12 +59,8 @@ const DetailScreen = ({navigation, route}) => {
                 onPress={() => {
                   navigation.goBack();
                 }}>
-                <View style={styles.btnBack}>
-                  <ArrowLeft2
-                    size="32"
-                    color={colors.primaryLightGreyHex}
-                    variant="Bold"
-                  />
+                <View>
+                  <ArrowLeft2 size="24" color={colors.primaryLightGreyHex} />
                 </View>
               </TouchableNativeFeedback>
               <TouchableNativeFeedback
@@ -73,7 +69,7 @@ const DetailScreen = ({navigation, route}) => {
                   data.favourite = true;
                   updateProduct(data.id, data);
                 }}>
-                <View style={styles.btnHeart}>
+                <View>
                   <Heart
                     size="32"
                     color={
@@ -286,11 +282,11 @@ const styles = StyleSheet.create({
     marginTop: spacing.space_16,
     paddingHorizontal: spacing.space_24,
   },
-  btnBack: {
-    padding: 8,
-    backgroundColor: colors.secondaryDarkGreyHex,
-    borderRadius: 10,
-  },
+  // btnBack: {
+  //   padding: 8,
+  //   backgroundColor: colors.secondaryDarkGreyHex,
+  //   borderRadius: 10,
+  // },
   btnHeart: {
     padding: 8,
     backgroundColor: colors.secondaryDarkGreyHex,

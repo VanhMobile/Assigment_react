@@ -14,7 +14,7 @@ const HeaderApp = ({title}) => {
           start={{x: 0, y: 1}}
           end={{x: 1, y: 0}}
           style={styles.btnCategoriesBg}>
-          <Category size="24" color="#828282" variant="Bold" />
+          <Category size="16" color="#828282" variant="Bold" />
         </LinearGradient>
       </View>
 
@@ -28,11 +28,7 @@ const HeaderApp = ({title}) => {
             // position: 'absolute', right: 24, top: 16
           }
         }>
-        <Image
-          style={styles.avt}
-          source={require('../assets/imgs/avatar.jpg')}
-          resizeMode="contain"
-        />
+        <Image style={styles.avt} source={require('../assets/imgs/avt.jpg')} />
       </View>
     </View>
   );
@@ -52,16 +48,16 @@ const styles = StyleSheet.create({
   btnCategories: {
     borderWidth: 2,
     borderColor: colors.primaryLightGreyHex,
-    borderRadius: 17,
+    borderRadius: 8,
   },
   btnCategoriesBg: {
-    padding: spacing.space_8,
-    borderRadius: 14,
+    padding: spacing.space_4,
+    borderRadius: 6,
   },
   titleHeader: {
     fontSize: fontSize.size_24,
     fontFamily: fontFamily.poppins_medium,
     color: colors.primaryWhiteHex,
   },
-  avt: {width: 50, height: 50},
+  avt: {width: 30, height: 30, borderRadius: 8},
 });
