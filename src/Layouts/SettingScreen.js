@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {colors, fontFamily, fontSize, spacing} from '../assets/themes/themes';
 import {
   ArrowLeft2,
@@ -40,11 +40,7 @@ const SettingScreen = ({navigation}) => {
         <Text style={styles.settingTitle}>Setting</Text>
         <TouchableOpacity style={styles.btnBack} onPress={handleGoBack}>
           <View>
-            <ArrowLeft2
-              size="32"
-              color={colors.secondaryLightGreyHex}
-              variant="Bold"
-            />
+            <ArrowLeft2 size="24" color={colors.secondaryLightGreyHex} />
           </View>
         </TouchableOpacity>
       </View>
@@ -52,66 +48,42 @@ const SettingScreen = ({navigation}) => {
       <ItemSetting
         leftIcon={
           <Backward5Seconds
-            size="25"
+            size="16"
             color={colors.primaryOrangeHex}
             variant="Bold"
           />
         }
         title={'Lịch sử'}
-        rightIcon={
-          <ArrowRight2
-            size="32"
-            color={colors.secondaryLightGreyHex}
-            variant="Bold"
-          />
-        }
+        rightIcon={<ArrowRight2 size="24" color={colors.primaryOrangeHex} />}
       />
 
       <ItemSetting
         leftIcon={
-          <User size="25" color={colors.primaryOrangeHex} variant="Bold" />
+          <User size="16" color={colors.primaryOrangeHex} variant="Bold" />
         }
         title={'Thông tin tài khoản'}
-        rightIcon={
-          <ArrowRight2
-            size="32"
-            color={colors.secondaryLightGreyHex}
-            variant="Bold"
-          />
-        }
+        rightIcon={<ArrowRight2 size="24" color={colors.primaryOrangeHex} />}
       />
 
       <ItemSetting
         leftIcon={
-          <Location size="25" color={colors.primaryOrangeHex} variant="Bold" />
+          <Location size="16" color={colors.primaryOrangeHex} variant="Bold" />
         }
         title={'Địa chỉ'}
-        rightIcon={
-          <ArrowRight2
-            size="32"
-            color={colors.secondaryLightGreyHex}
-            variant="Bold"
-          />
-        }
+        rightIcon={<ArrowRight2 size="24" color={colors.primaryOrangeHex} />}
       />
 
       <ItemSetting
-        leftIcon={<MoneyAdd size="25" color="#FF8A65" variant="Bold" />}
+        leftIcon={<MoneyAdd size="16" color="#FF8A65" variant="Bold" />}
         title={'Phương thức Thanh toán'}
         handlePress={handlePressItem_Payment}
-        rightIcon={
-          <ArrowRight2
-            size="32"
-            color={colors.secondaryLightGreyHex}
-            variant="Bold"
-          />
-        }
+        rightIcon={<ArrowRight2 size="24" color={colors.primaryOrangeHex} />}
       />
 
       <ItemSetting
         leftIcon={
           <QuoteDownCircle
-            size="25"
+            size="16"
             color={colors.primaryOrangeHex}
             variant="Bold"
           />
@@ -120,53 +92,45 @@ const SettingScreen = ({navigation}) => {
           navigation.navigate('InforApp');
         }}
         title={'Giới thiệu'}
-        rightIcon={
-          <ArrowRight2
-            size="32"
-            color={colors.secondaryLightGreyHex}
-            variant="Bold"
-          />
-        }
+        rightIcon={<ArrowRight2 size="24" color={colors.primaryOrangeHex} />}
       />
 
       <ItemSetting
         leftIcon={
           <MessageQuestion
-            size="25"
+            size="16"
             color={colors.primaryOrangeHex}
             variant="Bold"
           />
         }
         title={'Trợ giúp'}
-        rightIcon={
-          <ArrowRight2
-            size="32"
-            color={colors.secondaryLightGreyHex}
-            variant="Bold"
-          />
-        }
+        rightIcon={<ArrowRight2 size="24" color={colors.primaryOrangeHex} />}
       />
 
       <ItemSetting
         leftIcon={
           <LogoutCurve
-            size={25}
+            size={16}
             color={colors.primaryOrangeHex}
             variant="Bold"
           />
         }
         title={'Đăng xuất'}
-        rightIcon={
-          <ArrowRight2
-            size="32"
-            color={colors.secondaryLightGreyHex}
-            variant="Bold"
-          />
-        }
+        rightIcon={<ArrowRight2 size="24" color={colors.primaryOrangeHex} />}
         handlePress={openDialog}
       />
 
-      <Dialog visible={dialogVisible} />
+      <Dialog
+        visible={dialogVisible}
+        onClose={closeDialog}
+        mess={'Bạn muốn đăng xuất ?'}
+        onOKe={() => {
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'LoginScreen'}],
+          });
+        }}
+      />
     </View>
   );
 };
@@ -189,9 +153,6 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.poppins_medium,
   },
   btnBack: {
-    padding: spacing.space_8,
-    backgroundColor: colors.secondaryDarkGreyHex,
-    borderRadius: 10,
     position: 'absolute',
     left: spacing.space_24,
   },

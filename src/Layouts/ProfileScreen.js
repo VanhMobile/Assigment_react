@@ -73,7 +73,7 @@ const ProfileScreen = ({navigation}) => {
           style={styles.btnSetting}
           onPress={handlePressSetting}>
           <Setting2
-            size="32"
+            size="24"
             color={colors.primaryLightGreyHex}
             variant="Bold"
           />
@@ -82,7 +82,7 @@ const ProfileScreen = ({navigation}) => {
       <ScrollView>
         <View style={styles.containerAvt}>
           <Image
-            source={require('../assets/imgs/avatar.jpg')}
+            source={require('../assets/imgs/avt.jpg')}
             style={styles.avt}
           />
         </View>
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: spacing.space_24,
     backgroundColor: colors.secondaryDarkGreyHex,
-    padding: spacing.space_8,
+    padding: spacing.space_4,
     borderRadius: 10,
   },
   containerAvt: {
@@ -159,10 +159,10 @@ const styles = StyleSheet.create({
     marginTop: spacing.space_30 * 2,
   },
   avt: {
-    width: 100,
-    height: 100,
-    resizeMode: 'contain',
+    width: 80,
+    height: 80,
     marginBottom: spacing.space_30 * 2,
+    borderRadius: 8,
   },
   proEdt: {
     borderColor: colors.secondaryGreyHex,
